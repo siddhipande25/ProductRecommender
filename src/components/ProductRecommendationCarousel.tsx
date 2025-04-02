@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { db } from '@/app/firebase/firebase'; // Adjust path if needed
+import { db } from '@/app/firebase/firebase'; 
 import { doc, getDoc } from 'firebase/firestore';
 
 interface Product {
     id: string;
     name: string;
     category: string;
-    starRating?: number; // Make starRating optional
+    starRating?: number; 
     offer?: { discount: number } | 'out of stock' | null;
     price: number;
     scratchedPrice?: number;
@@ -35,7 +35,6 @@ const ProductRecommendationCarousel: React.FC<ProductRecommendationCarouselProps
             setLoading(true);
             setError(null);
 
-            // Get the recommender function URL from env variables
             const recommenderFunctionUrl = process.env.NEXT_PUBLIC_RECOMMENDER_FUNCTION_URL;
             console.log('Recommender function URL:', recommenderFunctionUrl);
 
@@ -54,7 +53,6 @@ const ProductRecommendationCarousel: React.FC<ProductRecommendationCarouselProps
                     },
                 });
 
-                // Store the response status for debugging
                 setDebugInfo({
                     status: response.status,
                     statusText: response.statusText,
@@ -68,7 +66,7 @@ const ProductRecommendationCarousel: React.FC<ProductRecommendationCarouselProps
                 console.log('Received product IDs:', data);
 
                 if (Array.isArray(data)) {
-                    setProductIds(data.slice(0, 10)); // Limiting to 10 for initial display
+                    setProductIds(data.slice(0, 10)); 
                     console.log(`Retrieved ${data.length} product IDs`);
                 } else {
                     console.error('Invalid response format: Expected an array of product IDs.', data);
@@ -97,8 +95,6 @@ const ProductRecommendationCarousel: React.FC<ProductRecommendationCarouselProps
 
             try {
                 console.log(`Fetching details for ${productIds.length} products`);
-
-                // Process in smaller batches to avoid overwhelming Firestore
                 const batchSize = 10;
                 for (let i = 0; i < productIds.length; i += batchSize) {
                     const batch = productIds.slice(i, i + batchSize);
@@ -146,7 +142,7 @@ const ProductRecommendationCarousel: React.FC<ProductRecommendationCarouselProps
         fetchProductDetails();
     }, [productIds]);
 
-    console.log('Product Data in Carousel:', productsData); // Debugging log
+    console.log('Product Data in Carousel:', productsData); 
 
     if (loading && productIds.length > 0) {
         return (
